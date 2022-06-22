@@ -127,12 +127,12 @@ public class AvatarScreen extends Screen {
 
         for (FakeAvatarEntry entry : AvatarManager.getInstance().getAvatarEntryList())
             avatarWidget.children().add(new AvatarEntry(
-                    entry.getName(),
-                    entry.getFile(),
+                    entry.name(),
+                    entry.file(),
                     avatarWidget,
-                    entry.getRawImage(),
-                    entry.getAge(),
-                    entry.getIpfs()));
+                    entry.rawImage(),
+                    entry.age(),
+                    entry.ipfs()));
     }
 
     public static AvatarEntry getSelected(){

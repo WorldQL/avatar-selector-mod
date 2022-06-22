@@ -59,16 +59,6 @@ public class AvatarEntry extends AlwaysSelectedEntryListWidget.Entry<AvatarEntry
         client.getTextureManager().registerTexture(processedAvatar, processedImageBackedTexture);
     }
 
-    public void render(MatrixStack matrices, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
-        TextRenderer font = client.textRenderer;
-        renderIcon(x,y,matrices);
-        int maxNameWidth = rowWidth - 32 - 3;
-        if (font.getWidth(avatarName) > maxNameWidth)
-			avatarName = font.trimToWidth(avatarName, maxNameWidth - font.getWidth("...")) + "...";
-        font.draw(matrices, avatarName, x + 35, y + 5, 0xFFFFFF);
-
-    }
-
     @Override
     public boolean mouseClicked(double v, double v1, int i) {
         widget.setSelected(this);
@@ -78,23 +68,28 @@ public class AvatarEntry extends AlwaysSelectedEntryListWidget.Entry<AvatarEntry
     public Text getNarration() {
         return new LiteralText(avatarName);
     }
+
+    public void render(MatrixStack matrices, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
+        TextRenderer font = client.textRenderer;
+        renderIcon(x,y,matrices);
+        int maxNameWidth = rowWidth - 32 - 3;
+        if (font.getWidth(avatarName) > maxNameWidth)
+            avatarName = font.trimToWidth(avatarName, maxNameWidth - font.getWidth("...")) + "...";
+        font.draw(matrices, avatarName, x + 35, y + 5, 0xFFFFFF);
+
+    }
     
     private void renderIcon(int k, int j, MatrixStack matrices) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (!avatarAge.equals(AvatarAge.HD))
-            RenderSystem.setShaderTexture(0, rawAvatar);
+        RenderSystem.setShaderTexture(0, rawAvatar);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
         /* Head icons  */
         if(avatarAge == AvatarAge.OLD)
             DrawableHelper.drawTexture(matrices, k, j, 32.0F, 32.0F, 32, 32, 256, 128);
-        else if (avatarAge == AvatarAge.HD) {
-            // TODO fix skin head icon preview for HD skins, the below code doesnt work.
-            DrawableHelper.drawTexture(matrices, k, j, 32.0F, 32.0F, 32, 32, 128, 128);
-        }
-        else { // new
+        else {
             DrawableHelper.drawTexture(matrices, k, j, 32.0F, 32.0F, 32, 32, 256, 256);
             DrawableHelper.drawTexture(matrices, k, j, 160.0F, 32.0F, 32, 32, 256, 256);
         }

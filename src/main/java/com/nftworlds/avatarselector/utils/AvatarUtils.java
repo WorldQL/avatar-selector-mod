@@ -1,72 +1,18 @@
 package com.nftworlds.avatarselector.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.mojang.authlib.GameProfile;
-import com.nftworlds.avatarselector.enums.AvatarAge;
-import com.nftworlds.avatarselector.screen.FakeAvatarEntry;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.world.ClientWorld;
-import org.apache.commons.io.FileUtils;
 import sun.misc.Unsafe;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.nftworlds.avatarselector.AvatarSelector.avatarWidget;
 
 public class AvatarUtils {
 
     public static OtherClientPlayerEntity fakePlayer;
-
-    public static List<FakeAvatarEntry> loadAvatarEntries(File folder) {
-        NativeImage nativeImage;
-        AvatarAge age;
-        List<FakeAvatarEntry> avatarEntries = new ArrayList<>();
-
-        for (File fileEntry : folder.listFiles()) {
-
-            String name = null;
-            String ipfs = null;
-
-            try {
-                JsonObject jsonObject = new Gson().fromJson(new FileReader(fileEntry), JsonObject.class);
-                name = jsonObject.get("name").getAsString();
-                ipfs = jsonObject.get("texture").getAsString().substring(7);
-
-                URL url = new URL("https://routing.nftworlds.com/ipfs/" + ipfs);
-                File file = new File(name + ".png");
-                FileUtils.copyURLToFile(url, file);
-
-                nativeImage = AvatarUtils.toNativeImage(file);
-            } catch (JsonParseException | IOException e) {
-                // not a .json file, treat it as a .png (normal skin)
-                nativeImage = AvatarUtils.toNativeImage(fileEntry);
-            }
-
-            if(nativeImage != null){
-                if(nativeImage.getWidth() == 64 && nativeImage.getHeight() == 32)
-                    age = AvatarAge.OLD;
-                else if(nativeImage.getWidth() == 64 && nativeImage.getHeight() == 64)
-                    age = AvatarAge.NEW;
-                else
-                    age = AvatarAge.HD;
-
-                if (name == null)
-                    name = fileEntry.getName().substring(0, fileEntry.getName().length()-4);
-
-                avatarEntries.add(new FakeAvatarEntry(name, fileEntry, nativeImage, age, ipfs));
-            }
-        }
-        return avatarEntries;
-    }
-
 
     public static OtherClientPlayerEntity getDummyPlayer() throws Exception{
         if(fakePlayer == null)  {
