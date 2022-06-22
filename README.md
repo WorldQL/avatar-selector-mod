@@ -1,7 +1,5 @@
 # avatar-selector-mod
 A fancy skin picker UI for Minecraft fabric
-<img src="https://i.imgur.com/fzoKpEp.png"/>
+<img src="https://i.imgur.com/F3h8Cc5.png"/>
 
-## Todo
-Add functionality to the change skin button.
 
