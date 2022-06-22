@@ -8,9 +8,11 @@
   "client": [
     "MixinAbstractClientPlayerEntity",
     "MixinClientWorld",
+    "MixinEntryListWidget",
     "MixinLivingEntityRenderer",
     "MixinMultiplayerMenu",
     "MixinPlayerEntityRenderer",
+    "MixinScreen",
     "MixinSkinMenu"
   ],
   "injectors": {

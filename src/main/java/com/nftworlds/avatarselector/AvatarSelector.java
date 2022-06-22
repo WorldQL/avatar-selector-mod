@@ -1,7 +1,6 @@
 package com.nftworlds.avatarselector;
 
 import com.nftworlds.avatarselector.screen.AvatarWidget;
-import com.nftworlds.avatarselector.utils.AvatarUtils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -12,6 +11,8 @@ import java.io.File;
 public class AvatarSelector implements ModInitializer {
     public static final String ID = "avatarselector";
     public static final Logger LOGGER = LoggerFactory.getLogger(ID);
+
+    public static final Identifier BACKGROUND_TEXTURE = new Identifier(AvatarSelector.ID, "options_background.png");
 
     public static File folder;
 

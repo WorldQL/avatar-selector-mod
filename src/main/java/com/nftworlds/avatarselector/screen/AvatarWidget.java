@@ -3,6 +3,7 @@ package com.nftworlds.avatarselector.screen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
+
 public class AvatarWidget extends AlwaysSelectedEntryListWidget<AvatarEntry>
 {
     AvatarScreen parent;
@@ -12,7 +13,6 @@ public class AvatarWidget extends AlwaysSelectedEntryListWidget<AvatarEntry>
         super(client, width, height, top, bottom, itemHeight);
         this.parent = parent;
     }
-
     @Override
     protected int getMaxPosition()
     {

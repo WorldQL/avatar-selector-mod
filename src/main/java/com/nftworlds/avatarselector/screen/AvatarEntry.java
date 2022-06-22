@@ -8,7 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.math.MatrixStack;
@@ -69,6 +69,7 @@ public class AvatarEntry extends AlwaysSelectedEntryListWidget.Entry<AvatarEntry
         return new LiteralText(avatarName);
     }
 
+    @Override
     public void render(MatrixStack matrices, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
         TextRenderer font = client.textRenderer;
         renderIcon(x,y,matrices);
@@ -78,7 +79,7 @@ public class AvatarEntry extends AlwaysSelectedEntryListWidget.Entry<AvatarEntry
         font.draw(matrices, avatarName, x + 35, y + 5, 0xFFFFFF);
 
     }
-    
+
     private void renderIcon(int k, int j, MatrixStack matrices) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

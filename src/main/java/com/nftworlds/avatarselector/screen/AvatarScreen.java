@@ -1,8 +1,6 @@
 package com.nftworlds.avatarselector.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.nftworlds.avatarselector.AvatarManager;
-import com.nftworlds.avatarselector.AvatarSelector;
 import com.nftworlds.avatarselector.enums.AvatarType;
 import com.nftworlds.avatarselector.utils.AvatarUtils;
 import net.minecraft.client.MinecraftClient;
@@ -13,7 +11,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
 import java.io.File;
@@ -23,10 +20,6 @@ import static com.nftworlds.avatarselector.AvatarSelector.avatarWidget;
 public class AvatarScreen extends Screen {
     public final Screen parent;
 
-    // trying to change the background image. May need another mixin
-    public static final Identifier BACKGROUND_TEXTURE = new Identifier(AvatarSelector.ID, "background.png");
-
-
     public AvatarScreen(Screen screen) {
         super(Text.of("Change Skin"));
         parent = screen;
@@ -35,7 +28,7 @@ public class AvatarScreen extends Screen {
     @Override
     protected void init() {
         int topY = 52;
-        if (avatarWidget == null) { // 52
+        if (avatarWidget == null) {
             avatarWidget = new AvatarWidget(client, width / 2, height, topY, height - 28, 36, this);
             avatarWidget.setLeftPos(0);
         }
@@ -104,10 +97,10 @@ public class AvatarScreen extends Screen {
         }
     }
 
+    @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
         renderBackgroundTexture(1);
-        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         avatarWidget.render(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);
 
