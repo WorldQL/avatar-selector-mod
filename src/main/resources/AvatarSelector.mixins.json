@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nftworlds.avatarselector.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "MixinAbstractClientPlayerEntity",
+    "MixinClientWorld",
+    "MixinLivingEntityRenderer",
+    "MixinMultiplayerMenu",
+    "MixinPlayerEntityRenderer",
+    "MixinSkinMenu"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "avatarselector",
+  "version": "${version}",
+  "name": "AvatarSelector",
+  "description": "",
+  "authors": ["CodedRed"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/AvatarSelector/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.nftworlds.avatarselector.client.AvatarSelectorClient"
+    ],
+    "main": [
+      "com.nftworlds.avatarselector.AvatarSelector"
+    ]
+  },
+  "mixins": [
+    "AvatarSelector.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.18.2"
+  }
+}
