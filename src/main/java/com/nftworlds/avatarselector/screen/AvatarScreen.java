@@ -1,5 +1,8 @@
 package com.nftworlds.avatarselector.screen;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.nftworlds.avatarselector.AvatarManager;
 import com.nftworlds.avatarselector.enums.AvatarType;
 import com.nftworlds.avatarselector.utils.AvatarUtils;
@@ -7,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -14,7 +18,14 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
 
+import static com.nftworlds.avatarselector.AvatarSelector.BACKGROUND_TEXTURE;
 import static com.nftworlds.avatarselector.AvatarSelector.avatarWidget;
 
 public class AvatarScreen extends Screen {
@@ -53,7 +64,7 @@ public class AvatarScreen extends Screen {
         });
 
         //open avatar folder
-        addDrawableChild(new ButtonWidget((width - (width/5)) + 2, height - 24, 80, 20, Text.of("Open Folder"), button -> Util.getOperatingSystem().open(new File("avatars"))));
+//        addDrawableChild(new ButtonWidget((width - (width/5)) + 2, height - 24, 80, 20, Text.of("Open Folder"), button -> Util.getOperatingSystem().open(new File("avatars"))));
 
         //classic select button
         addDrawableChild(new ButtonWidget(width/5 + 3, 28, 80, 20, Text.of("Classic"), button -> getSelected().toggleAvatarType()) {
@@ -88,7 +99,25 @@ public class AvatarScreen extends Screen {
 
     private void changeSkin(boolean confirmed) {
         if (confirmed) {
-            // they confirmed the skin change. Skin -> getSelected() to get the ipfs do getSelected().ipfs
+            try {
+                // they confirmed the skin change. Skin -> getSelected() to get the ipfs do getSelected().ipfs
+                JsonObject jsonObject = new JsonObject();
+                JsonObject innerObj = new JsonObject();
+
+                innerObj.addProperty("avataripfshash", getSelected().ipfs);
+                jsonObject.add("data", innerObj);
+
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("https://players-api.nftworlds.com/cosmetics"))
+                        .header("Authorization", System.getProperty("NFTWAuthToken"))
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
+                        .build();
+
+                String response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             MinecraftClient.getInstance().setScreen(parent); // when done do this
 
         }

@@ -20,8 +20,10 @@ public class MixinAbstractClientPlayerEntity {
 
     @Inject(at = @At("HEAD"), method = "getModel", cancellable = true)
     public void getModel(CallbackInfoReturnable<String> cir){
-        if(MinecraftClient.getInstance().currentScreen instanceof AvatarScreen)
-            cir.setReturnValue(AvatarScreen.getSelected().avatarType.getName());
+        if(MinecraftClient.getInstance().currentScreen instanceof AvatarScreen) {
+            if (AvatarScreen.getSelected() != null)
+                cir.setReturnValue(AvatarScreen.getSelected().avatarType.getName());
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "getPlayerListEntry", cancellable = true)
@@ -33,6 +35,7 @@ public class MixinAbstractClientPlayerEntity {
     @Inject(at = @At("HEAD"), method = "getSkinTexture", cancellable = true)
     public void getSkinTexture(CallbackInfoReturnable<Identifier> cir){
         if(MinecraftClient.getInstance().currentScreen instanceof AvatarScreen)
-            cir.setReturnValue(AvatarScreen.getSelected().processedAvatar);
+            if (AvatarScreen.getSelected() != null)
+                cir.setReturnValue(AvatarScreen.getSelected().processedAvatar);
     }
 }

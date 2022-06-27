@@ -12,7 +12,7 @@ public class AvatarSelector implements ModInitializer {
     public static final String ID = "avatarselector";
     public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
-    public static final Identifier BACKGROUND_TEXTURE = new Identifier(AvatarSelector.ID, "options_background.png");
+    public static final Identifier BACKGROUND_TEXTURE = new Identifier(AvatarSelector.ID, "background.png");
 
     public static File folder;
 
