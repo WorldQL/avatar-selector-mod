@@ -11,6 +11,8 @@ import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,8 +42,12 @@ public abstract class MixinPlayerEntityRenderer extends LivingEntityRenderer {
             playerEntityModel.rightSleeve.visible = isPartVisible(PlayerModelPart.RIGHT_SLEEVE);
             playerEntityModel.sneaking = false;
 
+            //player.getInventory().main.set(0, new ItemStack(Items.BOW));
+
             playerEntityModel.rightArmPose = BipedEntityModel.ArmPose.EMPTY;
             playerEntityModel.leftArmPose = BipedEntityModel.ArmPose.EMPTY;
+
+            // could run an animation loop starting here
         }
 
         else

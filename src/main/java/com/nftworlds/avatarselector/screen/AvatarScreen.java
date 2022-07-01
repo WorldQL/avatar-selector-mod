@@ -1,31 +1,25 @@
 package com.nftworlds.avatarselector.screen;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.nftworlds.avatarselector.AvatarManager;
+import com.nftworlds.avatarselector.AvatarSelector;
 import com.nftworlds.avatarselector.enums.AvatarType;
 import com.nftworlds.avatarselector.utils.AvatarUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Util;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 
-import static com.nftworlds.avatarselector.AvatarSelector.BACKGROUND_TEXTURE;
 import static com.nftworlds.avatarselector.AvatarSelector.avatarWidget;
 
 public class AvatarScreen extends Screen {
@@ -49,7 +43,7 @@ public class AvatarScreen extends Screen {
             addAvatar();
 
         //back button
-        addDrawableChild(new ButtonWidget(width/4 - 100 - 2, height - 24, 80, 20, new TranslatableText("gui.back"),
+        addDrawableChild(new ButtonWidget(width/4 - 102, height - 24, 80, 20, new TranslatableText("gui.back"),
                 button -> MinecraftClient.getInstance().setScreen(parent)));
 
         //change skin button
@@ -77,7 +71,7 @@ public class AvatarScreen extends Screen {
         });
 
         //slim select button
-        addDrawableChild(new ButtonWidget(width/4 - 100 - 2, 28, 80, 20, Text.of("Slim"), button -> getSelected().toggleAvatarType()) {
+        addDrawableChild(new ButtonWidget(width/4 - 102, 28, 80, 20, Text.of("Slim"), button -> getSelected().toggleAvatarType()) {
             @Override
             public void render(MatrixStack matrices, int var1, int var2, float var3) {
                 visible = true;
@@ -86,21 +80,23 @@ public class AvatarScreen extends Screen {
             }
         });
 
-        int topRowY = 4;
+        // poses button (this is the same location as the refresh button)
+//        addDrawableChild(new ButtonWidget(width/4 - 102, 4, 80, 20, Text.of("Poses"), button -> {
+//            AvatarManager.getInstance().cycleAnimation();
+//        }));
 
-        //refresh button
-        addDrawableChild(new ButtonWidget(width/4 - 100 - 2, topRowY, 80, 20, new TranslatableText("selectServer.refresh"), button -> {
-            AvatarManager.getInstance().loadAvatarFolder();
-            addAvatar();
-            avatarWidget.setSelected(null);
-        }));
+//        //refresh button
+//        addDrawableChild(new ButtonWidget(width/4 - 102, 4, 80, 20, new TranslatableText("selectServer.refresh"), button -> {
+//            AvatarManager.getInstance().loadAvatarFolder();
+//            addAvatar();
+//            avatarWidget.setSelected(null);
+//        }));
 
     }
 
     private void changeSkin(boolean confirmed) {
         if (confirmed) {
             try {
-                // they confirmed the skin change. Skin -> getSelected() to get the ipfs do getSelected().ipfs
                 JsonObject jsonObject = new JsonObject();
                 JsonObject innerObj = new JsonObject();
 
@@ -115,13 +111,15 @@ public class AvatarScreen extends Screen {
                         .build();
 
                 String response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+                AvatarSelector.LOGGER.info("Sent skin set request, response from server:");
+                AvatarSelector.LOGGER.info(response);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            MinecraftClient.getInstance().setScreen(parent); // when done do this
+            MinecraftClient.getInstance().setScreen(parent); // puts them in previous screen
 
         }
-        else { //they cancelled the skin change
+        else { // goes back to skin selector screen
             client.setScreen(this);
         }
     }

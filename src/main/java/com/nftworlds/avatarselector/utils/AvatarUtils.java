@@ -28,7 +28,7 @@ public class AvatarUtils {
     }
 
 
-    public static void drawPlayer(int x, int y, int height, int mouseX, int mouseY) throws Exception{
+    public static void drawPlayer(int x, int y, int height, int mouseX, int mouseY) throws Exception {
             InventoryScreen.drawEntity(x, y, height, x-mouseX, (y-160)-mouseY, getDummyPlayer());
     }
 
